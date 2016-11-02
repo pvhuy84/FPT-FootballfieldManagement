@@ -1,0 +1,14 @@
+body {
+	background: #EFF2FB url('../images/background.jpg') no-repeat center center fixed ;
+}
+
+
+.container{
+	background-color: white;
+}
+.navbar{
+	margin-top: 10px;
+}
+tbody{
+    overflow: auto;
+}
