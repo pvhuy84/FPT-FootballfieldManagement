@@ -6,19 +6,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class logoutServerlet
+ * Servlet implementation class managementfieldhasbookedServlet
  */
-@WebServlet("/logout")
-public class logoutServlet extends HttpServlet {
+@WebServlet("/manage-fields-have-booked")
+public class managefieldshavebookedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public logoutServlet() {
+    public managefieldshavebookedServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,9 +26,7 @@ public class logoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		session.invalidate();
-		request.getRequestDispatcher("login").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/manage-fields-have-booked.jsp").forward(request, response);
 	}
 
 	/**

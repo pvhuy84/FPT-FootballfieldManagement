@@ -1,0 +1,28 @@
+body {
+	background: #EFF2FB url('../images/background.jpg') no-repeat center center
+		fixed;
+}
+
+#contain {
+	margin-top: 40px;
+}
+
+#button {
+	font-size: 25px;
+	height: 60px;
+	text-align: center;
+	background-color: rgba(181, 160, 160, 0.1);
+}
+
+#button:hover {
+	background-color: rgba(51, 122, 183, 0.31);
+}
+
+#text {
+	margin-top: 150px;
+	text-align: center;
+}
+
+p {
+	font-size: 70px;
+}

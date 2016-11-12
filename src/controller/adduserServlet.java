@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,16 +12,16 @@ import model.bean.User;
 import model.bo.UserBO;
 
 /**
- * Servlet implementation class checkLoginServerlet
+ * Servlet implementation class adduserServlet
  */
-@WebServlet("/check-login")
-public class checkLoginServlet extends HttpServlet {
+@WebServlet("/add-user")
+public class adduserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public checkLoginServlet() {
+	public adduserServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -36,24 +34,23 @@ public class checkLoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String phonenumber = request.getParameter("tfPhonenumber");
 		String password = request.getParameter("tfPassword");
-
-		String error = "";
-		User user = new UserBO().checkUser(phonenumber, password);
-
-		HttpSession session = request.getSession();
+		String repassword = request.getParameter("tfRepassword");
+		String name = request.getParameter("tfName");
+		String role = request.getParameter("slRole");
 		
-		if (user!=null) {
-			session.setAttribute("user", user);
-			if (user.getRole() == 1) {
-				response.sendRedirect("manage-fields");
-			} else {
-				response.sendRedirect("manage-fields-have-booked");
-			}
+		String status="";
+		if ("".equals(phonenumber) || "".equals(password) || "".equals(repassword) || "".equals(name)
+				|| "".equals(role)) {
+			status="Data input empty";
+		} else if(!password.equals(repassword)) {
+			status="Password don't match";
 		} else {
-			error = "username or password invalid";
-			session.setAttribute("error", error);
-			response.sendRedirect("login");
+			int roleInt = Integer.parseInt(role);
+			status = new UserBO().addUser(new User(phonenumber, password, name, roleInt));
 		}
+		HttpSession session = request.getSession();
+		session.setAttribute("status", status);
+		response.sendRedirect("register");
 	}
 
 	/**

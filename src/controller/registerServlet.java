@@ -1,30 +1,24 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.bean.FootballField;
-import model.bo.getDataBO;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class homeAdminServlet
+ * Servlet implementation class registerServlet
  */
-@WebServlet("/homeAdminServlet")
-public class homeAdminServlet extends HttpServlet {
+@WebServlet("/register")
+public class registerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public homeAdminServlet() {
+    public registerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,10 +27,12 @@ public class homeAdminServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ArrayList<FootballField> footballFieldArrayList = getDataBO.getFootballField();
-		request.setAttribute("footballFieldArrayList", footballFieldArrayList);
-		RequestDispatcher rd = request.getRequestDispatcher("homeAdmin.jsp");
-		rd.forward(request, response);
+		HttpSession session = request.getSession();
+		if(session.getAttribute("status")!=null){
+			request.setAttribute("status", (String) session.getAttribute("status"));
+			session.invalidate();
+		}
+		request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
 	}
 
 	/**
