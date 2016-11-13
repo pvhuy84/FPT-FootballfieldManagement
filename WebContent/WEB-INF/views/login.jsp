@@ -14,7 +14,7 @@
 	<div class="panel panel-primary col-sm-4 col-sm-push-4">
 		<form method="post" action="check-login">
 			<input type="text" name="tfPhonenumber" class="form-control"
-											placeholder="Phonenumber" autofocus> 
+											placeholder="Phone number" autofocus> 
 			<input type="password" name="tfPassword" class="form-control" 
 											placeholder="Password" required>
 			<p id="thongbao" style="color: red; margin-top: 15px"></p>

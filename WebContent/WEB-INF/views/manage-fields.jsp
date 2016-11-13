@@ -1,3 +1,7 @@
+<%@page import="model.bean.Timepacket"%>
+<%@page import="model.bean.Field"%>
+<%@page import="java.util.ArrayList"%>
+<%if(session.getAttribute("user")==null) response.sendRedirect("login"); %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -19,23 +23,24 @@
 		
 		<!-- filter -->
 		<div class="filter">
-			<form method="post" action="getTimePacketForAdminServlet">
-				<div class="col-sm-2">
-					<select class="form-control" name="field" id="field">
+			<form method="post" action="getTimePacketForAdminServlet" onsubmit="return check()">
+				<div class="col-sm-5">
+					<input class="form-control" id="day" name="day" onchange="checkFormatDate()"
+						value="<%=(String) session.getAttribute("today") %>" placeholder="dd/mm/yyyy"/>
+				</div>
+				<div class="col-sm-4"> 
+					<select class="form-control" name="listtimepacket" id="listtimepacket">
+					<%
+						if(session.getAttribute("listTimepacket")!=null) {
+							ArrayList<Timepacket> listTimepacket = (ArrayList<Timepacket>) session.getAttribute("listTimepacket");
+							for(int i = 0; i < listTimepacket.size(); i ++) {
+								out.print("<option value="+listTimepacket.get(i).getTimepacket_id() +">"+listTimepacket.get(i).getDescription() +"</option>");
+							}
+						}
+					%>
 					</select>
 				</div>
-				<div class="col-sm-4">
-					<input class="form-control" id="day" name="day" placeholder="dd/mm/yyyy"/>
-				</div>
-				<div class="col-sm-4">
-					<select class="form-control" name="condition" id="condition">
-						<option value="1">All</option>
-						<option value="2">Unregistered</option>
-						<option value="3">Registered but unconfirmed</option>
-						<option value="4">Confirmed</option>
-					</select>
-				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<input type="submit" class="btn btn-primary col-sm-12" value="Xem" />
 				</div>
 			</form>
@@ -47,16 +52,15 @@
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
-						<th>Time</th>
-						<th>Registered</th>
-						<th>Confirmed</th>
-						<th>Phone number of hirer</th>
-						<th>Price</th>
+						<th>Field</th>
+						<th>State</th>
+						<th>Booker</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td colspan="5">No data</td>
+						<td colspan="4">No data</td>
 					</tr>
 				</tbody>
 			</table>
@@ -66,5 +70,16 @@
 	
 	<script	src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/date.customize.js"></script>
+	<script type="text/javascript">
+		function check() {
+			day  = document.getElementById("day").value;
+			if(!checkFormatDate(day)) {
+				alert("Error format day!");
+				return false;
+			}
+			return true;
+		}
+	</script>
 </body>
 </html>

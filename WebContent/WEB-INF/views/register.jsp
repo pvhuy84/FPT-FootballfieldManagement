@@ -15,7 +15,7 @@
 		if (request.getAttribute("status") != null) { 
 			String status=(String) request.getAttribute("status");
 			if(status.equals("success")) {
-				out.print("<p style='color:green;margin-top: 15px'>" + status + "</p>");
+				out.print("<p style='color:green;margin-top: 15px'>" + status + ", go to <a href='login'>login</a></p>");
 			} else {
 				out.print("<p style='color:red;margin-top: 15px'>" + status + "</p>");
 			}

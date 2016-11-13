@@ -32,6 +32,7 @@ public class adduserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String phonenumber = request.getParameter("tfPhonenumber");
 		String password = request.getParameter("tfPassword");
 		String repassword = request.getParameter("tfRepassword");
