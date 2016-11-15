@@ -2,6 +2,7 @@ package model.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.bean.User;
 
@@ -14,7 +15,7 @@ public class UserDAO extends connectDB {
 		try {
 			statement = connection.createStatement();
 			System.out.println("input: " + phonenumber + ", " + password);
-			String sql = "select * from user where phonenumber = '" + phonenumber + "' and password = '" + password
+			String sql = "select * from "+ userTableName +" where phonenumber = '" + phonenumber + "' and password = '" + password
 					+ "'";
 			rs = statement.executeQuery(sql);
 			if (rs.next()) {
@@ -33,7 +34,7 @@ public class UserDAO extends connectDB {
 		String sql = "";
 		try {
 			// Check phone number exist or not
-			sql = "select * from user where phonenumber=? and password=?";
+			sql = "select * from "+ userTableName +"  where phonenumber=? and password=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, user.getPhonenumber());
 			preparedStatement.setString(2, user.getPassword());
@@ -43,7 +44,7 @@ public class UserDAO extends connectDB {
 			}
 
 			// Add user to database
-			sql = "insert into user values(?, ?, ?, ?)";
+			sql = "insert into "+ userTableName +"  values(?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, user.getPhonenumber());
 			preparedStatement.setString(2, user.getPassword());
@@ -54,12 +55,45 @@ public class UserDAO extends connectDB {
 			} else {
 				status = "Database error";
 			}
-			
 			preparedStatement.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = "Database error";
 		}
 		return status;
+	}
+
+	public ArrayList<User> getListCustomer() {
+		ArrayList<User> listCustomer = new ArrayList<>();
+		try {
+			statement = connection.createStatement();
+			String sql = "select * from "+ userTableName +" where role = 0";
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				listCustomer.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+			}
+			preparedStatement.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return listCustomer;
+	}
+
+	public String deleteUser(String userphonenumber) {
+		String deleteReport="Delete not success";
+		try {
+			statement = connection.createStatement();
+			String sql = "DELETE FROM bookfield WHERE phonenumber='"+userphonenumber+"'";
+			if(!statement.execute(sql)) {
+				sql = "DELETE FROM "+userTableName+" WHERE phonenumber='"+userphonenumber+"'";
+				if(!statement.execute(sql)) {
+					deleteReport="Delete success";
+				}
+			} 			
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteReport;
 	}
 }

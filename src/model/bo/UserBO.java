@@ -1,5 +1,7 @@
 package model.bo;
 
+import java.util.ArrayList;
+
 import model.bean.User;
 import model.dao.UserDAO;
 
@@ -11,5 +13,13 @@ public class UserBO {
 	
 	public String addUser(User user) {
 		return userDAO.addUser(user);
+	}
+
+	public ArrayList<User> getListCustomer() {
+		return userDAO.getListCustomer();
+	}
+
+	public String deleteUser(String userphonenumber) {
+		return userDAO.deleteUser(userphonenumber);
 	}
 }
