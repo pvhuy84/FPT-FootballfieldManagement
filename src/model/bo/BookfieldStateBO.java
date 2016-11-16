@@ -19,4 +19,8 @@ public class BookfieldStateBO {
 		return new BookfieldStateDAO().getListBookFieldState(day, timepacket_id);
 	}
 
+	public ArrayList<BookfieldState> getListBookFieldEmpty(Date day, int timepacket_id) {
+		return new BookfieldStateDAO().getListBookFieldEmpty(day, timepacket_id);
+	}
+
 }

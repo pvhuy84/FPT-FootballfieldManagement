@@ -29,18 +29,30 @@ public class deleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") == null) {
+			response.sendRedirect("login");
+			return;
+		}
+		
 		String actionReport="Not success";
 		String field_id = request.getParameter("field");
 		String day = request.getParameter("day");
 		int timepacket_id = Integer.parseInt(request.getParameter("timepacket"));
 		
 		actionReport = new BookfieldBO().delete(field_id, timepacket_id, day);
-		String sqlDay = day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2);
-		HttpSession session = request.getSession();
+
 		session.setAttribute("actionReport", actionReport);
-		session.setAttribute("timepacket_id", timepacket_id);
-		session.setAttribute("day", java.sql.Date.valueOf(sqlDay));
-		response.sendRedirect("manage-fields");
+		if(request.getParameter("phonenumber")==null) {
+			String sqlDay = day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2);
+			session.setAttribute("timepacket_id", timepacket_id);
+			session.setAttribute("day", java.sql.Date.valueOf(sqlDay));
+			response.sendRedirect("manage-fields");
+		} else {
+			response.sendRedirect("manage-fields-have-booked");
+		}
+		
+		
 	}
 
 	/**

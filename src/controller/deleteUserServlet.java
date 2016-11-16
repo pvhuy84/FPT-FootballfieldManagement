@@ -29,10 +29,15 @@ public class deleteUserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") == null) {
+			response.sendRedirect("login");
+			return;
+		}
+		
 		String userphonenumber = request.getParameter("userphonenumber");
 		String deleteReport = new UserBO().deleteUser(userphonenumber);
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("deleteReport", deleteReport);
 		
 		response.sendRedirect("manage-customers");

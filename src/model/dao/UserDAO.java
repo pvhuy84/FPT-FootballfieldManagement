@@ -66,10 +66,10 @@ public class UserDAO extends connectDB {
 	public ArrayList<User> getListCustomer() {
 		ArrayList<User> listCustomer = new ArrayList<>();
 		try {
-			statement = connection.createStatement();
 			String sql = "select * from "+ userTableName +" where role = 0";
-			ResultSet rs = statement.executeQuery(sql);
-			if (rs.next()) {
+			preparedStatement = connection.prepareStatement(sql);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
 				listCustomer.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
 			}
 			preparedStatement.close();

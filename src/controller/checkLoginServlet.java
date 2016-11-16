@@ -34,14 +34,14 @@ public class checkLoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
 		String phonenumber = request.getParameter("tfPhonenumber");
 		String password = request.getParameter("tfPassword");
 
 		String error = "";
 		User user = new UserBO().checkUser(phonenumber, password);
 
-		HttpSession session = request.getSession();
-		
 		if (user!=null) {
 			session.setAttribute("user", user);
 			if (user.getRole() == 1) {

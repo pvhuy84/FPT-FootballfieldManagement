@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -10,20 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.bean.User;
-import model.bo.UserBO;
+import model.bean.BookfieldState;
+import model.bo.BookfieldStateBO;
 
 /**
- * Servlet implementation class manageCustomersServlet
+ * Servlet implementation class getBookFieldEmptyServlet
  */
-@WebServlet("/manage-customers")
-public class manageCustomersServlet extends HttpServlet {
+@WebServlet("/get-book-field-empty")
+public class getBookFieldEmptyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public manageCustomersServlet() {
+    public getBookFieldEmptyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,28 +35,19 @@ public class manageCustomersServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user") == null) {
-			if(((User) session.getAttribute("user")).getRole()!=1) {
-				response.sendRedirect("login");
-				return;
-			}
 			response.sendRedirect("login");
 			return;
 		}
-		ArrayList<User> listCustomer = new ArrayList<>();
-		listCustomer = new UserBO().getListCustomer();
 		
-		for(int i = 0; i < listCustomer.size(); i ++) {
-			System.out.println("listCustomer: " + listCustomer.get(i).getName()+", "+listCustomer.get(i).getPhonenumber());
-		}
-		
-		if (session.getAttribute("deleteReport") != null) {
-			String deleteReport=(String)session.getAttribute("deleteReport");
-			request.setAttribute("deleteReport", deleteReport);
-			session.removeAttribute("deleteReport");
-		}
-		request.setAttribute("listCustomer", listCustomer);
-		
-		request.getRequestDispatcher("/WEB-INF/views/admin/manage-customers.jsp").forward(request, response);
+		int timepacket_id=Integer.parseInt(request.getParameter("listtimepacket"));
+		String day=request.getParameter("day");
+		Date sqlDay = Date.valueOf(day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2));
+		ArrayList<BookfieldState> listBookFieldEmpty = new ArrayList<>();
+		listBookFieldEmpty = new BookfieldStateBO().getListBookFieldEmpty(sqlDay, timepacket_id);
+		session.setAttribute("day", sqlDay);
+		session.setAttribute("timepacket_id", timepacket_id);
+		session.setAttribute("listBookFieldEmpty", listBookFieldEmpty);
+		response.sendRedirect("book-field");
 	}
 
 	/**

@@ -13,22 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.bean.BookfieldState;
-import model.bean.User;
 import model.bo.BookfieldStateBO;
-import model.bo.FieldBO;
 import model.bo.TimepacketBO;
 
 /**
- * Servlet implementation class managementfieldServlet
+ * Servlet implementation class bookFieldServlet
  */
-@WebServlet("/manage-fields")
-public class managefieldsServlet extends HttpServlet {
+@WebServlet("/book-field")
+public class bookFieldServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public managefieldsServlet() {
+	public bookFieldServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -41,23 +39,16 @@ public class managefieldsServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user") == null) {
-			if(((User) session.getAttribute("user")).getRole()!=1) {
-				response.sendRedirect("login");
-				return;
-			}
 			response.sendRedirect("login");
 			return;
 		}
-		// Set to session list timepackets
-		session.setAttribute("listTimepacket", new TimepacketBO().getListTimepacket());
 
+		session.setAttribute("listTimepacket", new TimepacketBO().getListTimepacket());
 		// Get today
 		Calendar calendar = Calendar.getInstance();
 		String today = calendar.get(Calendar.DATE) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/"
 				+ calendar.get(Calendar.YEAR);
 
-		// Get list bookfield state and set to request
-		ArrayList<BookfieldState> listBookFieldState = new ArrayList<>();
 		String day = today;
 		int timepacket_id = 1;
 		if (session.getAttribute("day") != null) {
@@ -65,32 +56,38 @@ public class managefieldsServlet extends HttpServlet {
 			day = day.substring(8, day.length()) + "/" + day.substring(5, 7) + "/" + day.substring(0, 4);
 			session.removeAttribute("day");
 		}
-		
+
 		if (session.getAttribute("timepacket_id") != null) {
 			timepacket_id = (int) session.getAttribute("timepacket_id");
 			session.removeAttribute("timepacket_id");
 		}
-		if (session.getAttribute("listBookfieldState") != null) {
-			listBookFieldState = (ArrayList<BookfieldState>) session.getAttribute("listBookfieldState");
-			session.removeAttribute("listBookfieldState");
+
+		ArrayList<BookfieldState> listBookFieldEmpty = new ArrayList<>();
+
+		if (session.getAttribute("listBookFieldEmpty") != null) {
+			listBookFieldEmpty = (ArrayList<BookfieldState>) session.getAttribute("listBookFieldEmpty");
+			session.removeAttribute("listBookFieldEmpty");
 		} else {
-			listBookFieldState = new BookfieldStateBO()
-					.getListBookFieldState(Date.valueOf(day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2)), timepacket_id);
+			listBookFieldEmpty = new BookfieldStateBO()
+					.getListBookFieldEmpty(Date.valueOf(day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2)), timepacket_id);
 		}
-		
+//		} else {
+//			listBookFieldEmpty = new BookfieldStateBO()
+//					.getListBookFieldEmpty(java.sql.Date.valueOf(calendar.get(Calendar.YEAR) + "-"
+//							+ (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DATE)), timepacket_id);
+//		}
 		
 		if (session.getAttribute("actionReport") != null) {
-			String actionReport=(String)session.getAttribute("actionReport");
+			String actionReport = (String) session.getAttribute("actionReport");
 			request.setAttribute("actionReport", actionReport);
 			session.removeAttribute("actionReport");
 		}
 
-		
 		request.setAttribute("day", day);
 		request.setAttribute("timepacket_id", timepacket_id);
-		request.setAttribute("listBookFieldState", listBookFieldState);
-		
-		request.getRequestDispatcher("/WEB-INF/views/admin/manage-fields.jsp").forward(request, response);
+		request.setAttribute("listBookFieldEmpty", listBookFieldEmpty);
+
+		request.getRequestDispatcher("WEB-INF/views/book-field.jsp").forward(request, response);
 	}
 
 	/**

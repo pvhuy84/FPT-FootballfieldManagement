@@ -11,6 +11,7 @@ public class BookfieldDAO extends connectDB {
 
 	public String book(String bookerPhonenumber, String field_id, int timepacket_id,String day) {
 		String actionReport="Book not success";
+		System.out.println("DATA: " + bookerPhonenumber + ", " + field_id + ", " + timepacket_id + ", " + day);
 		try {
 			String sqlDay = day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2);
 			String sql="SELECT * FROM bookfield WHERE field_id=? AND day=? AND timepacket_id=?";
@@ -19,17 +20,17 @@ public class BookfieldDAO extends connectDB {
 			preparedStatement.setString(2, sqlDay);
 			preparedStatement.setInt(3, timepacket_id);
 			if(preparedStatement.executeQuery().next()) {
-				actionReport="Book not success";
+				actionReport="Book not success (exist)";
 			} else {
 				String status="unconfirmed";
 				sql="INSERT INTO bookfield(phonenumber, field_id, timepacket_id, day, status) VALUES (?,?,?,?,?)";
+				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setString(1, bookerPhonenumber);
 				preparedStatement.setString(2, field_id);
-				preparedStatement.setString(3, sqlDay);
-				preparedStatement.setInt(4, timepacket_id);
+				preparedStatement.setInt(3, timepacket_id);
+				preparedStatement.setString(4, sqlDay);
 				preparedStatement.setString(5, status);
-				preparedStatement = connection.prepareStatement(sql);
-				if(preparedStatement.executeQuery().next()) {
+				if(!preparedStatement.execute()) {
 					actionReport="Book field success";
 				} else {
 					actionReport="Book not success";
@@ -38,6 +39,7 @@ public class BookfieldDAO extends connectDB {
 			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return actionReport;
 	}
@@ -45,6 +47,7 @@ public class BookfieldDAO extends connectDB {
 	public String confirm(String field_id, int timepacket_id, String day) {
 		String actionReport="Confirm not success";
 		String sqlDay = day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2);
+		System.out.println("cf: "+field_id+", "+timepacket_id+", " +sqlDay);
 		String status="confirmed";
 		try {
 			String sql="UPDATE bookfield SET status=? WHERE field_id=? AND day=? AND timepacket_id=?";
@@ -61,6 +64,7 @@ public class BookfieldDAO extends connectDB {
 			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return actionReport;
 	}
@@ -84,6 +88,7 @@ public class BookfieldDAO extends connectDB {
 			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return actionReport;
 	}
@@ -105,6 +110,7 @@ public class BookfieldDAO extends connectDB {
 			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return actionReport;
 	}

@@ -14,10 +14,10 @@ public class Bookfield {
 	private String field_id;
 	private int timepacket_id;
 	private Date day;
-	private int status;
+	private String status;
 	public Bookfield() {
 	}
-	public Bookfield(String phonenumber, String field_id, int timepacket_id, Date day, int status) {
+	public Bookfield(String phonenumber, String field_id, int timepacket_id, Date day, String status) {
 		this.phonenumber = phonenumber;
 		this.field_id = field_id;
 		this.timepacket_id = timepacket_id;
@@ -48,10 +48,10 @@ public class Bookfield {
 	public void setDay(Date day) {
 		this.day = day;
 	}
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	

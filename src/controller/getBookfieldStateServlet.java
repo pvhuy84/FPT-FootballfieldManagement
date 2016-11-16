@@ -33,12 +33,17 @@ public class getBookfieldStateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") == null) {
+			response.sendRedirect("login");
+			return;
+		}
+		
 		int timepacket_id=Integer.parseInt(request.getParameter("listtimepacket"));
 		String day=request.getParameter("day");
 		Date sqlDay = Date.valueOf(day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2));
 		ArrayList<BookfieldState> listBookfieldState = new ArrayList<>();
 		listBookfieldState = new BookfieldStateBO().getListBookFieldState(sqlDay, timepacket_id);
-		HttpSession session = request.getSession();
 		session.setAttribute("day", sqlDay);
 		session.setAttribute("timepacket_id", timepacket_id);
 		session.setAttribute("listBookfieldState", listBookfieldState);

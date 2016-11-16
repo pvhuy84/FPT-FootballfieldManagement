@@ -29,6 +29,11 @@ public class cancelServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user") == null) {
+			response.sendRedirect("login");
+			return;
+		}
 		String actionReport="Not success";
 		String field_id = request.getParameter("field");
 		String day = request.getParameter("day");
@@ -36,7 +41,6 @@ public class cancelServlet extends HttpServlet {
 		
 		actionReport = new BookfieldBO().cancel(field_id, timepacket_id, day);
 		String sqlDay = day.substring(6, day.length()) + "-" + day.substring(3, 5) + "-" + day.substring(0, 2);
-		HttpSession session = request.getSession();
 		session.setAttribute("actionReport", actionReport);
 		session.setAttribute("timepacket_id", timepacket_id);
 		session.setAttribute("day", java.sql.Date.valueOf(sqlDay));
