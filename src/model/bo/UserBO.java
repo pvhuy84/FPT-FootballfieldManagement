@@ -22,4 +22,8 @@ public class UserBO {
 	public String deleteUser(String userphonenumber) {
 		return userDAO.deleteUser(userphonenumber);
 	}
+
+	public User getUser(String phonenumber) {
+		return userDAO.getUser(phonenumber);
+	}
 }

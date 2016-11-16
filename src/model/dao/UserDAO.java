@@ -96,4 +96,23 @@ public class UserDAO extends connectDB {
 		}
 		return deleteReport;
 	}
+
+	public User getUser(String phonenumber) {
+		User user = new User();
+		try {
+			String sql = "SELECT * FROM " + userTableName + " WHERE phonenumber=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, phonenumber);
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				user.setName(rs.getString("name"));
+				user.setPhonenumber(rs.getString("phonenumber"));
+				System.out.println("customer p: " +rs.getString("phonenumber"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return user;
+	}
 }

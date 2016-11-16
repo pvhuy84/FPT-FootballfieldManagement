@@ -88,7 +88,7 @@
 							<tr>
 									<td colspan="1"><label><%=field %></label></td>
 									<td colspan="1"><label><%=status %></label></td>
-									<td colspan="1"><label><a href="user-information?username=<%=listBookFieldState.get(i).getBookerPhonenumber()%>"><%=booker %></a></label></td>
+									<td colspan="1"><label><a href="user-information?phonenumber=<%=listBookFieldState.get(i).getBookerPhonenumber()%>"><%=booker %></a></label></td>
 									<td>
 										<%
 											if(status.equals("confirmed")) {

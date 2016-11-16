@@ -28,40 +28,24 @@
 		
 		<!-- table -->
 		<div class="table col-sm-12" style="margin-top: 20px">
-		<%
-			if(request.getAttribute("deleteReport")!=null) {
-				out.print("<p style='color:red'>"+(String)request.getAttribute("deleteReport")+"</p>");
-			}
-		%>
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
 						<th>Customer</th>
 						<th>Phone Number</th>
-						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
 				<%
-					if(request.getAttribute("listCustomer")!=null) {
-						ArrayList<User> listCustomer = new ArrayList<>();
-						listCustomer=(ArrayList<User>)request.getAttribute("listCustomer");
-						for(int i = 0; i < listCustomer.size(); i ++) {
+					if(request.getAttribute("customer")!=null) {
+						User customer =(User)request.getAttribute("customer");
 							%>
 							<tr>
-								<td colspan="1" style='width: 40%'><%=listCustomer.get(i).getName() %></td>
-								<td colspan="1" style='width: 40%'><%=listCustomer.get(i).getPhonenumber() %></td>
-								<td colspan="1" style='width: 20%'><a class='btn btn-danger' style='width: 80%' href='delete-user?userphonenumber=<%=listCustomer.get(i).getPhonenumber()%>'>X</a></td>
+								<td colspan="1" style='width: 50%'><%=customer.getName() %></td>
+								<td colspan="1" style='width: 50%'><%=customer.getPhonenumber() %></td>
 							</tr>
 							<%
-						}
-					} else {
-						%>
-						<tr>
-							<td colspan="4">No data</td>
-						</tr>
-						<%
-					}
+					} 
 				%>
 				</tbody>
 			</table>
